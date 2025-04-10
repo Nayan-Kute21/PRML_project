@@ -35,7 +35,7 @@ const ImageUpload = ({ modelId, setAnalysisResults }) => {
     setIsUploading(true);
     setUploadStatus('Analyzing...');
     setError(null);
-    
+    console.log("modelId", modelId);  
     try {
       // Make actual API call to the backend
       const response = await fetch(`${API_BASE_URL}/predict`, {

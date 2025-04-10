@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 // Icons for different models
 const modelIcons = {
-  knn: (
+  KNN: (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-full h-full">
       <circle cx="6" cy="8" r="2" fill="#CCCCFF" />
       <circle cx="14" cy="6" r="2" fill="#CCCCFF" />
@@ -18,7 +18,7 @@ const modelIcons = {
       <line x1="10" y1="10" x2="16" y2="18" stroke="#A3A3CC" strokeWidth="1" />
     </svg>
   ),
-  decisionTree: (
+  DT: (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-full h-full">
       <circle cx="12" cy="4" r="2" fill="#292966" />
       <line x1="12" y1="6" x2="12" y2="8" stroke="#5C5C99" strokeWidth="1.5" />
@@ -33,7 +33,7 @@ const modelIcons = {
       <line x1="16" y1="19" x2="18" y2="22" stroke="#A3A3CC" strokeWidth="1.5" />
     </svg>
   ),
-  svm: (
+  SVM: (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-full h-full">
       <circle cx="8" cy="8" r="1.5" fill="#CCCCFF" />
       <circle cx="6" cy="12" r="1.5" fill="#CCCCFF" />
@@ -44,7 +44,7 @@ const modelIcons = {
       <path d="M4 12C4 12 8 6 20 12" stroke="#292966" strokeWidth="2" fill="none" />
     </svg>
   ),
-  randomForest: (
+  RF: (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-full h-full">
       <path d="M6 20V10L10 6L14 10V20" fill="none" stroke="#CCCCFF" strokeWidth="1.5" />
       <path d="M10 20V8L14 4L18 8V20" fill="none" stroke="#A3A3CC" strokeWidth="1.5" />
@@ -52,7 +52,7 @@ const modelIcons = {
       <line x1="2" y1="20" x2="18" y2="20" stroke="#292966" strokeWidth="1.5" />
     </svg>
   ),
-  ann: (
+  ANN: (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-full h-full">
       <circle cx="6" cy="6" r="1.5" fill="#CCCCFF" />
       <circle cx="6" cy="12" r="1.5" fill="#CCCCFF" />
@@ -70,7 +70,7 @@ const modelIcons = {
       <line x1="12" y1="15" x2="18" y2="12" stroke="#5C5C99" strokeWidth="1" />
     </svg>
   ),
-  cnn: (
+  CNN: (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-full h-full">
       <rect x="3" y="6" width="4" height="4" fill="#CCCCFF" stroke="#A3A3CC" strokeWidth="1" />
       <rect x="3" y="14" width="4" height="4" fill="#CCCCFF" stroke="#A3A3CC" strokeWidth="1" />
@@ -124,17 +124,19 @@ const ModelButton = ({
   };
 
   // Format stat values as percentages if they're between 0-1
-  const formatStatValue = (value) => {
-    if (typeof value === 'number' && value >= 0 && value <= 1) {
+  const formatStatValue = (value, index) => {
+    // First stat should be displayed as percentage
+    if (index === 0 && typeof value === 'number') {
       return `${(value * 100).toFixed(1)}%`;
     }
+    // Second stat should be displayed as is
     return value;
   };
 
   return (
     <div 
       className={`
-        rounded-lg overflow-hidden shadow-lg transition-all duration-200
+        rounded-lg overflow-hidden shadow-lg transition-all duration-200 cursor-pointer
         ${isSelected ? 'transform scale-102 shadow-xl ring-2 ring-offset-2 ring-[#5C5C99]' : ''}
       `}
       style={{ 

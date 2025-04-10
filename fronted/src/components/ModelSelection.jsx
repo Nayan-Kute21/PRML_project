@@ -9,7 +9,7 @@ const ModelSelection = ({ onModelSelect }) => {
   // Sample model data
   const models = [
     {
-      id: 'knn',
+      id: 'KNN',
       name: 'K-Nearest Neighbors',
       description: 'A simple, instance-based learning algorithm that classifies new data points based on similarity measures.',
       stats: {
@@ -18,7 +18,7 @@ const ModelSelection = ({ onModelSelect }) => {
       }
     },
     {
-      id: 'decisionTree',
+      id: 'DT',
       name: 'Decision Tree',
       description: 'A tree-like model of decisions where leaves represent class labels and branches represent feature conditions.',
       stats: {
@@ -27,7 +27,7 @@ const ModelSelection = ({ onModelSelect }) => {
       }
     },
     {
-      id: 'svm',
+      id: 'SVM',
       name: 'Support Vector Machine',
       description: 'Finds the hyperplane that best separates classes in a high-dimensional feature space.',
       stats: {
@@ -36,7 +36,7 @@ const ModelSelection = ({ onModelSelect }) => {
       }
     },
     {
-      id: 'randomForest',
+      id: 'RF',
       name: 'Random Forest',
       description: 'An ensemble learning method that constructs multiple decision trees during training.',
       stats: {
@@ -45,23 +45,15 @@ const ModelSelection = ({ onModelSelect }) => {
       }
     },
     {
-      id: 'ann',
+      id: 'ANN',
       name: 'Artificial Neural Network',
       description: 'A computational model inspired by the human brain that learns patterns from input data.',
       stats: {
         'Accuracy': 0.91,
         'F1 Score': 0.90,
-      }
+      } 
     },
-    {
-      id: 'cnn',
-      name: 'Convolutional Neural Network',
-      description: 'Deep learning neural network designed to process structured grid data such as images.',
-      stats: {
-        'Accuracy': 0.96,
-        'F1 Score': 0.95,
-      }
-    }
+    
   ];
   
   const handleModelSelect = (modelId) => {

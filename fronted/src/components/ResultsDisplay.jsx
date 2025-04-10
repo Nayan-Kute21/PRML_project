@@ -6,12 +6,12 @@ const ResultsDisplay = ({ results, modelId }) => {
   // Get model name based on ID
   const getModelName = (id) => {
     const modelNames = {
-      'knn': 'K-Nearest Neighbors',
-      'decisionTree': 'Decision Tree',
-      'svm': 'Support Vector Machine',
-      'randomForest': 'Random Forest',
-      'ann': 'Artificial Neural Network',
-      'cnn': 'Convolutional Neural Network'
+      'KNN': 'K-Nearest Neighbors',
+      'DT': 'Decision Tree',
+      'SVM': 'Support Vector Machine',
+      'RF': 'Random Forest',
+      'ANN': 'Artificial Neural Network',
+      'CNN': 'Convolutional Neural Network'
     };
     
     return modelNames[id] || id;
@@ -20,6 +20,17 @@ const ResultsDisplay = ({ results, modelId }) => {
   const handleNewAnalysis = () => {
     navigate('/');
   };
+
+  // Format the prediction label to be more readable
+  const formatLabel = (label) => {
+    if (!label) return '';
+    
+    // Replace underscores with spaces and capitalize each word
+    return label.replace(/_/g, ' ')
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
+  };
   
   return (
     <div className="max-w-4xl mx-auto my-8">
@@ -27,7 +38,7 @@ const ResultsDisplay = ({ results, modelId }) => {
         <div className="bg-[#292966] p-6">
           <h2 className="text-2xl font-bold text-white">Analysis Results</h2>
           <p className="text-[#CCCCFF] mt-2">
-            Model used: {getModelName(modelId)}
+            Model used: {getModelName(results.model_used || modelId)}
           </p>
         </div>
         
@@ -46,9 +57,6 @@ const ResultsDisplay = ({ results, modelId }) => {
                     />
                   )}
                 </div>
-                <p className="text-sm text-[#5C5C99] mt-2">
-                  Processing time: {results.processingTime}
-                </p>
               </div>
             </div>
             
@@ -57,29 +65,22 @@ const ResultsDisplay = ({ results, modelId }) => {
               <div className="bg-[#F0F0FF] p-4 rounded-lg h-full">
                 <h3 className="text-lg font-medium text-[#292966] mb-3">Prediction Results</h3>
                 
-                {results.predictions && results.predictions.length > 0 ? (
-                  <div className="space-y-4">
-                    {results.predictions.map((prediction, index) => (
-                      <div 
-                        key={index}
-                        className={`p-3 rounded-lg ${index === 0 ? 'bg-[#CCCCFF]' : 'bg-white border border-[#A3A3CC]'}`}
-                      >
-                        <div className="flex justify-between items-center">
-                          <span className={`font-bold ${index === 0 ? 'text-[#292966]' : 'text-[#5C5C99]'}`}>
-                            {prediction.class}
-                          </span>
-                          <span className={`font-medium ${index === 0 ? 'text-[#292966]' : 'text-[#5C5C99]'}`}>
-                            {(prediction.probability * 100).toFixed(1)}%
-                          </span>
-                        </div>
-                        <div className="mt-2 w-full bg-white rounded-full h-2.5 overflow-hidden">
-                          <div 
-                            className="h-2.5 rounded-full bg-[#292966]" 
-                            style={{ width: `${prediction.probability * 100}%` }}
-                          ></div>
-                        </div>
+                {results.prediction_label ? (
+                  <div className="p-4 rounded-lg bg-[#CCCCFF]">
+                    <div className="mb-2">
+                      <span className="text-lg font-bold text-[#292966]">
+                        Species Identified:
+                      </span>
+                    </div>
+                    <div className="bg-white p-4 rounded-lg border border-[#A3A3CC]">
+                      <span className="text-xl font-bold text-[#292966]">
+                        {formatLabel(results.prediction_label)}
+                      </span>
+                      <div className="mt-2 text-[#5C5C99]">
+                        <span className="font-medium">Class ID: </span>
+                        {results.prediction_class}
                       </div>
-                    ))}
+                    </div>
                   </div>
                 ) : (
                   <p className="text-[#5C5C99]">No predictions available.</p>
