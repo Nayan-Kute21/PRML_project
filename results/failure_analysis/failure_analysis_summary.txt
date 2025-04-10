@@ -1,0 +1,14 @@
+Failure Analysis for SVM
+Total incorrect predictions: 2 out of 198
+Error rate: 1.01%
+
+
+Misclassification 1:
+True class: Quercus_Pubescens
+Predicted class: Quercus_Greggii
+
+
+Misclassification 2:
+True class: Lithocarpus_Edulis
+Predicted class: Lithocarpus_Cleistocarpus
+
