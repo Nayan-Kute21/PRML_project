@@ -5,12 +5,17 @@ const ImageUpload = ({ modelId, setAnalysisResults }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadStatus, setUploadStatus] = useState('');
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
+
+  // API base URL - adjust based on your backend location
+  const API_BASE_URL = 'http://localhost:5000';
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setSelectedImage(file);
+      setError(null); // Clear any previous errors
     }
   };
 
@@ -25,50 +30,37 @@ const ImageUpload = ({ modelId, setAnalysisResults }) => {
     // Create FormData
     const formData = new FormData();
     formData.append('image', selectedImage);
-    formData.append('modelId', modelId);
+    formData.append('model', modelId); // Use modelId as the model parameter
     
     setIsUploading(true);
     setUploadStatus('Analyzing...');
+    setError(null);
     
     try {
-      // Mock API endpoint - replace with your actual API
-      // For demo purposes, we'll simulate a response after a delay
-      setTimeout(() => {
-        // Mock response data
-        const mockResults = {
-          modelId: modelId,
-          predictions: [
-            { class: 'Oak', probability: 0.89 },
-            { class: 'Maple', probability: 0.08 },
-            { class: 'Birch', probability: 0.03 },
-          ],
-          processingTime: '1.2s',
-          imageData: URL.createObjectURL(selectedImage)
-        };
-        
-        setAnalysisResults(mockResults);
-        setUploadStatus('Analysis complete!');
-        navigate('/results'); // Navigate to results page
-      }, 2000);
-      
-      // Uncomment below for actual API implementation
-      /*
-      const response = await fetch('https://api.example.com/analyze', {
+      // Make actual API call to the backend
+      const response = await fetch(`${API_BASE_URL}/predict`, {
         method: 'POST',
         body: formData,
+        // No need to set Content-Type header as FormData will set it automatically
       });
       
-      if (response.ok) {
-        const results = await response.json();
-        setAnalysisResults(results);
-        setUploadStatus('Analysis complete!');
-        navigate('/results');
-      } else {
-        setUploadStatus('Analysis failed. Please try again.');
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to analyze image');
       }
-      */
+      
+      const results = await response.json();
+      
+      // Add the image URL to the results
+      results.imageData = URL.createObjectURL(selectedImage);
+      
+      setAnalysisResults(results);
+      setUploadStatus('Analysis complete!');
+      navigate('/results'); // Navigate to results page
     } catch (error) {
-      setUploadStatus('Error: ' + error.message);
+      console.error("API Error:", error);
+      setError(error.message || 'An unknown error occurred');
+      setUploadStatus('Analysis failed. Please try again.');
     } finally {
       setIsUploading(false);
     }
@@ -134,10 +126,10 @@ const ImageUpload = ({ modelId, setAnalysisResults }) => {
           
           {uploadStatus && (
             <div className={`mt-4 p-3 rounded-lg text-center font-medium
-              ${uploadStatus.includes('Error') ? 'bg-red-100 text-red-800' : 
+              ${error ? 'bg-red-100 text-red-800' : 
                 uploadStatus.includes('complete') ? 'bg-green-100 text-green-800' : 
                 'bg-blue-100 text-blue-800'}`}>
-              {uploadStatus}
+              {error || uploadStatus}
             </div>
           )}
         </form>
