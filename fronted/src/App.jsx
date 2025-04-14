@@ -1,23 +1,15 @@
 import { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
-import ModelSelection from './components/ModelSelection';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import ImageUpload from './components/iamgeupload';
 import ResultsDisplay from './components/ResultsDisplay';
 
-// Create a separate header component to use useNavigate hook
+// Create a separate header component
 function Header() {
-  const navigate = useNavigate();
-  
   return (
     <header className="py-4 bg-[#292966] shadow-md">
       <div className="container mx-auto px-4">
         <h1 className="text-2xl font-bold text-white">
-          <div 
-            onClick={() => navigate('/')} 
-            className="cursor-pointer"
-          >
-            Leaf Classification System
-          </div>
+          Leaf Classification System
         </h1>
       </div>
     </header>
@@ -26,29 +18,18 @@ function Header() {
 
 // Main App Component
 function App() {
-  const [selectedModel, setSelectedModel] = useState(null);
   const [analysisResults, setAnalysisResults] = useState(null);
 
   return (
     <Router>
       <div className="min-h-screen bg-gradient-to-br from-[#CCCCFF] to-[#A3A3CC]">
-        <Routes>
-          <Route path="*" element={<Header />} />
-        </Routes>
+        <Header />
 
         <main className="container mx-auto px-4 py-6">
           <Routes>
-            <Route path="/" element={<ModelSelection onModelSelect={setSelectedModel} />} />
-            <Route
-              path="/upload"
-              element={
-                selectedModel ?
-                  <ImageUpload
-                    modelId={selectedModel}
-                    setAnalysisResults={setAnalysisResults}
-                  /> :
-                  <Navigate to="/" replace />
-              }
+            <Route 
+              path="/" 
+              element={<ImageUpload setAnalysisResults={setAnalysisResults} />} 
             />
             <Route
               path="/results"
@@ -56,7 +37,7 @@ function App() {
                 analysisResults ?
                   <ResultsDisplay
                     results={analysisResults}
-                    modelId={selectedModel}
+                    modelId="SVM"
                   /> :
                   <Navigate to="/" replace />
               }
