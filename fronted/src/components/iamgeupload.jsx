@@ -106,11 +106,11 @@ const ImageUpload = ({ setAnalysisResults }) => {
           <div className="grid grid-cols-2 gap-4 mb-6">
             <div className="bg-[#F6F6FF] p-4 rounded-lg text-center">
               <span className="block text-sm text-[#5C5C99] font-medium">Accuracy</span>
-              <span className="block text-2xl font-bold text-[#292966]">99%</span>
+              <span className="block text-2xl font-bold text-[#292966]">98.98%</span>
             </div>
             <div className="bg-[#F6F6FF] p-4 rounded-lg text-center">
               <span className="block text-sm text-[#5C5C99] font-medium">F1 Score</span>
-              <span className="block text-2xl font-bold text-[#292966]">0.98</span>
+              <span className="block text-2xl font-bold text-[#292966]">0.9892</span>
             </div>
           </div>
           
